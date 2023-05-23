@@ -10,38 +10,37 @@ const BottomTabs = createBottomTabNavigator();
 export default function RootRoute() {
   return (
     <BottomTabs.Navigator
-      screenOptions={{
+      screenOptions={({ route, navigation }) => ({
         headerShown: false,
         tabBarShowLabel: false,
-      }}
+        tabBarIcon: ({ color, focused, size }) => {
+          let iconName: 'home' | 'attach-money' | 'shopping-bag' = 'home';
+          if (route.name === 'Home') {
+            iconName = 'home';
+          } else if (route.name === 'Money') {
+            iconName = 'attach-money';
+          } else {
+            iconName = 'shopping-bag';
+          }
+          return (
+            <MaterialIcons name={iconName} size={size + 2} color={color} />
+          );
+        },
+        tabBarActiveTintColor: '#302b2b',
+        tabBarInactiveTintColor: '#757373',
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 15,
+          width: '50%',
+          left: 90,
+          borderRadius: 30,
+          elevation: 0,
+        },
+      })}
     >
-      <BottomTabs.Screen
-        name='Home'
-        component={Home}
-        options={{
-          tabBarIcon: () => (
-            <MaterialIcons name='home' size={28} color='#666' />
-          ),
-        }}
-      />
-      <BottomTabs.Screen
-        name='Money'
-        component={Money}
-        options={{
-          tabBarIcon: () => (
-            <MaterialIcons name='attach-money' size={28} color='#666' />
-          ),
-        }}
-      />
-      <BottomTabs.Screen
-        name='Bag'
-        component={Bag}
-        options={{
-          tabBarIcon: () => (
-            <MaterialIcons name='shopping-bag' size={28} color='#666' />
-          ),
-        }}
-      />
+      <BottomTabs.Screen name='Home' component={Home} />
+      <BottomTabs.Screen name='Money' component={Money} />
+      <BottomTabs.Screen name='Bag' component={Bag} />
     </BottomTabs.Navigator>
   );
 }
